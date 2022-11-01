@@ -11,6 +11,8 @@ class DefaultFormField extends StatelessWidget {
     required this.textValidator,
     this.prefixIcon,
     this.suffixIcon,
+    this.textInputAction,
+    this.isPassword = false,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -20,16 +22,18 @@ class DefaultFormField extends StatelessWidget {
   final String labelText;
   final String hintText;
   final String textValidator;
+  final TextInputAction? textInputAction;
 
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final bool isPassword;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
-      textInputAction: TextInputAction.next,
+      textInputAction: textInputAction,
       onEditingComplete: onEditingComplete,
       validator: (value) {
         if (value!.isEmpty) {
@@ -37,6 +41,7 @@ class DefaultFormField extends StatelessWidget {
         }
         return null;
       },
+      obscureText: isPassword,
       decoration: InputDecoration(
           suffixIcon: suffixIcon,
           prefixIcon: prefixIcon,
