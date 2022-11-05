@@ -1,4 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:e_commerce/core/network/cache_helper.dart';
+import 'package:e_commerce/features/home/presentation/view/home.dart';
 import 'package:e_commerce/features/login/presentation/views/widget/default_form_field.dart';
 import 'package:e_commerce/features/login/presentation/views/widget/main_button.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +34,17 @@ class LoginScreen extends StatelessWidget {
                   textColor: Colors.white,
                   fontSize: 16.0);
 
-              print(state.loginModel.data?.token);
-              print(state.loginModel.message);
+              CacheHelper.saveData(
+                      key: 'token', value: state.loginModel.data!.token)
+                  .then(
+                (value) => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                ),
+              );
             } else {
-              print(state.loginModel.message);
               Fluttertoast.showToast(
                   msg: state.loginModel.message,
                   toastLength: Toast.LENGTH_LONG,
