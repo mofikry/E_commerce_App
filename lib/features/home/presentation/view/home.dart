@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
           return ConditionalBuilder(
               condition: HomeCubit.get(context).homeModel != null,
               builder: (context) =>
-                  ProductBuilder(HomeCubit.get(context).homeModel),
+                  buildProduct(HomeCubit.get(context).homeModel),
               fallback: (context) => const Center(
                     child: CircularProgressIndicator(),
                   ));
@@ -24,10 +24,12 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget ProductBuilder(HomeModel? model) {
-  return Column(
-    children: [
-      CarouselSlider(
+Widget buildProduct(HomeModel? model) {
+  return SingleChildScrollView(
+    physics: const BouncingScrollPhysics(),
+    child: Column(
+      children: [
+        CarouselSlider(
           items: model!.data.banners
               .map((e) => Image(
                     image: NetworkImage(e.image),
@@ -43,7 +45,82 @@ Widget ProductBuilder(HomeModel? model) {
             enableInfiniteScroll: true,
             reverse: false,
             autoPlayInterval: const Duration(seconds: 3),
-          ))
-    ],
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 1 / 1.6,
+            crossAxisCount: 2,
+            children: List.generate(model.data.products.length,
+                (index) => buildProductModel(model.data.products[index])))
+      ],
+    ),
+  );
+}
+
+Widget buildProductModel(ProductModel model) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 9),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            Image(
+              image: NetworkImage(model.image),
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            Container(
+              color: Colors.red,
+              child: const Text(
+                'Dicsount',
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          model.name,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Text(
+              model.price,
+              style: const TextStyle(color: Colors.blue),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            if (model.discount != 0)
+              Text(
+                model.oldPrice,
+                style: const TextStyle(
+                    color: Colors.grey, decoration: TextDecoration.lineThrough),
+              ),
+            const Spacer(),
+            IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {},
+                icon: const Icon(Icons.favorite_border))
+          ],
+        )
+      ],
+    ),
   );
 }

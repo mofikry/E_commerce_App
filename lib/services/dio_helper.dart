@@ -19,9 +19,9 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = {
-      // 'lang': 'ar',
-      // 'Content-Type': 'application/json',
-      // 'Authorization': '$token',
+      'lang': lang,
+      'Content-Type': 'application/json',
+      'Authorization': '$token',
     };
     return await dio.get(
       url,
@@ -37,7 +37,7 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = {
-      'lang': 'ar',
+      'lang': lang,
       'Content-Type': 'application/json',
       'Authorization': '$token',
     };
@@ -57,9 +57,9 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = {
-      // 'lang': 'ar',
-      // 'Content-Type': 'application/json',
-      // 'Authorization': '$token',
+      'lang': lang,
+      'Content-Type': 'application/json',
+      'Authorization': '$token',
     };
     return await dio.put(
       url,

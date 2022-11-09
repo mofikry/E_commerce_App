@@ -31,8 +31,8 @@ class BannerModel {
 
 class ProductModel {
   late int id;
-  late dynamic price;
-  late dynamic oldPrice;
+  late String price;
+  late String oldPrice;
   late dynamic discount;
   late String image;
   late String name;
@@ -41,8 +41,8 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    price = json['price'];
-    oldPrice = json['old_price'];
+    price = json['price'].toString();
+    oldPrice = json['old_price'].toString();
     discount = json['discount'];
     image = json['image'];
     name = json['name'];

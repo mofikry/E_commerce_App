@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
 
       emit(ShopHomeSuccessState());
     }).catchError((error) {
-      emit(ShopHomeErrrorState(error));
+      emit(ShopHomeErrrorState(error.toString()));
     });
   }
 }
