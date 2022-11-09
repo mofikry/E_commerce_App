@@ -1,11 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce/core/network/cache_helper.dart';
-import 'package:e_commerce/features/home/presentation/view/home.dart';
 import 'package:e_commerce/features/login/presentation/views/widget/default_form_field.dart';
 import 'package:e_commerce/features/login/presentation/views/widget/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../home/presentation/view/layout_home.dart';
 import '../views_model/login_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                 (value) => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
+                    builder: (context) => HomeLayoutScreen(),
                   ),
                 ),
               );

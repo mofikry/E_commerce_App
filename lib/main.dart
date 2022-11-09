@@ -1,8 +1,10 @@
 import 'package:e_commerce/core/network/cache_helper.dart';
-import 'package:e_commerce/features/home/presentation/view/home.dart';
+import 'package:e_commerce/features/home/presentation/view_model/cubit/home_cubit.dart';
 import 'package:e_commerce/services/dio_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'features/home/presentation/view/layout_home.dart';
 import 'features/login/presentation/views/login_screen.dart';
 
 void main() async {
@@ -13,7 +15,7 @@ void main() async {
 
   Widget widget;
   if (token != null) {
-    widget = const HomeScreen();
+    widget = HomeLayoutScreen();
   } else {
     widget = LoginScreen();
   }
@@ -29,11 +31,23 @@ class Ecommerce extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'E_commerce App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(scaffoldBackgroundColor: const Color(0xffF9F9F9)),
-      home: startWidget,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => HomeCubit()..getHomeData(),
+          )
+        ],
+        child: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return MaterialApp(
+              title: 'E_commerce App',
+              debugShowCheckedModeBanner: false,
+              theme:
+                  ThemeData(scaffoldBackgroundColor: const Color(0xffF9F9F9)),
+              home: startWidget,
+            );
+          },
+        ));
   }
 }
