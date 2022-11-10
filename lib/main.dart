@@ -34,7 +34,9 @@ class Ecommerce extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => HomeCubit()..getHomeData(),
+            create: (context) => HomeCubit()
+              ..getHomeData()
+              ..getCategorys(),
           )
         ],
         child: BlocConsumer<HomeCubit, HomeState>(

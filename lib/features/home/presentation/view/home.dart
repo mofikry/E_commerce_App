@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:e_commerce/features/home/data/category__model.dart';
 import 'package:e_commerce/features/home/data/model_home.dart';
 import 'package:e_commerce/features/home/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,11 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return ConditionalBuilder(
-              condition: HomeCubit.get(context).homeModel != null,
-              builder: (context) =>
-                  buildProduct(HomeCubit.get(context).homeModel),
+              condition: HomeCubit.get(context).homeModel != null &&
+                  HomeCubit.get(context).categoryModel != null,
+              builder: (context) => buildProduct(
+                  HomeCubit.get(context).homeModel,
+                  HomeCubit.get(context).categoryModel),
               fallback: (context) => const Center(
                     child: CircularProgressIndicator(),
                   ));
@@ -24,10 +27,11 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget buildProduct(HomeModel? model) {
+Widget buildProduct(HomeModel? model, CategoryModel? categoryModel) {
   return SingleChildScrollView(
     physics: const BouncingScrollPhysics(),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CarouselSlider(
           items: model!.data.banners
@@ -48,7 +52,45 @@ Widget buildProduct(HomeModel? model) {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 9),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Categorys',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: ((context, index) =>
+                        buildCatergorys(categoryModel.data.data[index])),
+                    separatorBuilder: ((context, index) => const SizedBox(
+                          width: 10,
+                        )),
+                    itemCount: categoryModel!.data.data.length),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Now Poduct',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 15,
         ),
         GridView.count(
             shrinkWrap: true,
@@ -122,5 +164,32 @@ Widget buildProductModel(ProductModel model) {
         )
       ],
     ),
+  );
+}
+
+Widget buildCatergorys(DataModel model) {
+  return Stack(
+    alignment: Alignment.bottomCenter,
+    children: [
+      Image(
+        height: 100,
+        fit: BoxFit.cover,
+        width: 100,
+        image: NetworkImage(model.image),
+      ),
+      Container(
+        width: 100,
+        color: Colors.black.withOpacity(.7),
+        child: Text(
+          model.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      )
+    ],
   );
 }
